@@ -1,0 +1,8 @@
+{:lein         true
+ :builds       {:app {:target     :browser
+                      :output-dir "resources/public/js"
+                      :asset-path "/js"
+                      :modules    {:app {:entries [assignment-2.core]}}
+                      :devtools   {:after-load assignment-2.core/mount-root}}}
+ :dev-http     {3000 {:root    "resources/public"
+                      :handler assignment-2.handler/app}}}
