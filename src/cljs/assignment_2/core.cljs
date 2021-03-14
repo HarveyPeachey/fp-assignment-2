@@ -103,8 +103,8 @@
         (reagent/after-render clerk/after-render!)
         (session/put! :route {:current-page (page-for current-page)
                               :route-params route-params})
-        (clerk/navigate-page! path)
-        ))
+        (clerk/navigate-page! path)))
+
     :path-exists?
     (fn [path]
       (boolean (reitit/match-by-path router path)))})
