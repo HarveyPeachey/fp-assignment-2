@@ -5,7 +5,9 @@
    [reagent.session :as session]
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
-   [accountant.core :as accountant]))
+   [accountant.core :as accountant]
+   [assignment-2.maze-generator :as maze-gen]
+   [assignment-2.maze-graphics :as maze-gfx]))
 
 ;; -------------------------
 ;; Routes
@@ -32,7 +34,9 @@
      [:h1 "Welcome to assignment-2"]
      [:ul
       [:li [:a {:href (path-for :items)} "Items of assignment-2"]]
-      [:li [:a {:href "/broken/link"} "Broken link"]]]]))
+      [:li [:a {:href "/broken/link"} "Broken link"]]]
+     [:pre
+      [:p (maze-gfx/print-as-text (maze-gen/carve-passages))]]]))
 
 
 
