@@ -17,26 +17,32 @@
 
 (def grid (atom (make-a-grid 10 10)))
 
+(defn reset-grid []
+    (reset! grid (make-a-grid 10 10)))
+
+(defn toprow? [row size]
+  (= row (- size 1)))
+
 ; Maze Generation Algorithms
 ; -------------------------------------------------------------------------------------------------------------------
 (defn binary-tree
   ([row] (binary-tree row 0))
   ([row col]
-   ; store size of grid and number of cells
-   (let [size (count @grid) cells (count (first @grid))]
-       ; above top row return maze
+   ; store number of rows and number of columns
+   (let [no-of-rows (count @grid) no-of-cols (count (first @grid))]
        (cond
-           (= row size) @grid
+           ; above top row return maze
+           (= row no-of-rows) @grid
            ; top row && last cell do nothing
-           (and (= row (- size 1)) (= col (- cells 1))) 0
+           (and (toprow? row no-of-rows) (= col (- no-of-cols 1))) 0
            ; top row carve east
-           (=  row (- size 1)) (do
-                                   (swap! grid assoc-in [row col :east] 1)
-                                   (swap! grid assoc-in [row (+ col 1) :west] 1))
-           ; not top row && last cell carve north
-           (= col (- cells 1)) (do
-                                   (swap! grid assoc-in [row col :north] 1)
-                                   (swap! grid assoc-in [(+ row 1) col :south] 1))
+           (toprow? row no-of-rows) (do
+                                        (swap! grid assoc-in [row col :east] 1)
+                                        (swap! grid assoc-in [row (+ col 1) :west] 1))
+           ; not top row && last column carve north
+           (= col (- no-of-cols 1)) (do
+                                        (swap! grid assoc-in [row col :north] 1)
+                                        (swap! grid assoc-in [(+ row 1) col :south] 1))
            ; not top row carve north or east
            :else
            (if (= 0 (rand-int 2))
@@ -50,15 +56,19 @@
 ; Maze Generation Entry Function
 ; -------------------------------------------------------------------------------------------------------------------
 (defn carve-passages
-  ([] (carve-passages 0 "binary-tree"))
+  ([] (carve-passages 0 "bt"))
   ([row algorithm]
-   (if (= row (count @grid))
-       @grid
-       (do
-           (if (= algorithm "binary-tree")
+   {:post [(reset-grid)]}
+   (if (= algorithm "bt")
+     (if (= row (count @grid))
+         @grid
+         (do
              (dotimes [col (count (first @grid))]
-                 (binary-tree row col)))
-           (carve-passages (inc row) algorithm)))))
+                 (binary-tree row col))
+             (carve-passages (inc row) algorithm))))))
+  ; ([row col algorithm]
+  ;  {:post [(reset-grid)]}
+  ;  (if (= algorithm "rb"))))
 
 ; (def maze-string (print-as-text (carve-passages)))
 ;
