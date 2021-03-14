@@ -1,7 +1,8 @@
 (ns assignment-2.maze-generator "Maze Generator"
   (:require [clojure.string :as str]))
 
-; Maze Grid Creation ------------------------------------------------------------------------------------------------
+; Maze Grid Creation
+; -------------------------------------------------------------------------------------------------------------------
 (defn make-a-row [columns]
   (loop [count 0 row []]
       (if (= columns count)
@@ -16,8 +17,8 @@
 
 (def grid (atom (make-a-grid 10 10)))
 
-; Maze Generation Algorithms ----------------------------------------------------------------------------------------
-
+; Maze Generation Algorithms
+; -------------------------------------------------------------------------------------------------------------------
 (defn binary-tree
   ([row] (binary-tree row 0))
   ([row col]
@@ -46,8 +47,8 @@
                    (swap! grid assoc-in [row col :north] 1)
                    (swap! grid assoc-in [(+ row 1) col :south] 1)))))))
 
-; Maze Generation Entry Function -------------------------------------------------------------------------------------
-
+; Maze Generation Entry Function
+; -------------------------------------------------------------------------------------------------------------------
 (defn carve-passages
   ([] (carve-passages 0 "binary-tree"))
   ([row algorithm]
