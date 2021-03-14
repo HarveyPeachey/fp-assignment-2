@@ -1,11 +1,11 @@
-(ns assignment-1.mazes "Mazes"
+(ns assignment-2.maze-generator "Maze Generator"
   (:require [clojure.string :as str]))
 
 (defn make-a-row [columns]
   (loop [count 0 row []]
       (if (= columns count)
           row
-          (recur (inc count) (conj row {:north 0 :east 0 :south 0 :west 0 :visited 0})))))
+          (recur (inc count) (conj row {:north 0 :east 0 :south 0 :west 0 :visited 0 :distance -1})))))
 
 (defn make-a-grid [rows columns]
   (loop [count 0 grid []]
@@ -53,43 +53,8 @@
                (make-a-cell row col))
            (carve-passages (inc row))))))
 
-(defn print-cell-body [cell]
-    (if (= 1 (:east cell))
-        "    "
-        "   |"))
-
-(defn print-cell-bottom [cell]
-    (if (= 1 (:south cell))
-        "   +"
-        "---+"))
-
-(defn top-row
-    ([c] (top-row c "+"))
-    ([c row]
-
-     (if (= 0 c)
-         (str row "\n")
-         (top-row (dec c) (str row "---+")))))
-
-(defn print-as-text
-    [maze]
-
-    (loop [row (- (count maze) 1)
-           final (top-row (count (maze 0)))]
-        (if (< row 0)
-            final
-            (recur
-                (dec row)
-                (str final
-                     "|"
-                     (str/join (map #(print-cell-body %) (nth maze row)))
-                     "\n+"
-                     (str/join (map #(print-cell-bottom %) (nth maze row)))
-                     "\n")))))
-
-
-(def maze-string (print-as-text (carve-passages)))
-
-(def maze (map (partial apply str) (partition 17 maze-string)))
-
-(map #(.fillText ctx % 100 %2) maze (iterate #(+ % 10) 10))
+; (def maze-string (print-as-text (carve-passages)))
+;
+; (def maze (map (partial apply str) (partition 17 maze-string)))
+;
+; (map #(.fillText ctx % 100 %2) maze (iterate #(+ % 10) 10))
