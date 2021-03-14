@@ -36,7 +36,7 @@
       [:li [:a {:href (path-for :items)} "Items of assignment-2"]]
       [:li [:a {:href "/broken/link"} "Broken link"]]]
      [:pre
-      [:p (maze-gfx/print-as-text (maze-gen/carve-passages))]]]))
+      [:p {:style {:line-height "normal"}} (maze-gfx/print-as-text (maze-gen/carve-passages))]]]))
 
 
 
