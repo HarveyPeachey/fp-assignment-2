@@ -20,6 +20,16 @@
 (defn reset-grid []
     (reset! grid (make-a-grid 10 10)))
 
+; Maze Helper Functions
+; -------------------------------------------------------------------------------------------------------------------
+(defn lookup-x-carve [direction]
+  (let [dir-x-lookup {"N" 1 "E" 0 "S" -1 "W" 0}]
+    (get dir-x-lookup direction)))
+
+(defn lookup-y-carve [direction]
+  (let [dir-y-lookup {"N" 0 "E" 1 "S" 0 "W" -1}]
+    (get dir-y-lookup direction)))
+
 (defn toprow? [row no-of-rows]
   (= row (- no-of-rows 1)))
 
