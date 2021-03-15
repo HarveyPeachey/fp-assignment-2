@@ -15,10 +15,10 @@
           grid
           (recur (inc count) (conj grid (make-a-row columns))))))
 
-(def grid (atom (make-a-grid 10 10)))
+(def grid (atom (make-a-grid 20 20)))
 
 (defn reset-grid []
-    (reset! grid (make-a-grid 10 10)))
+    (reset! grid (make-a-grid 20 20)))
 
 ; Maze Helper Functions
 ; -------------------------------------------------------------------------------------------------------------------
@@ -66,6 +66,37 @@
                    (swap! grid assoc-in [row col :north] 1)
                    (swap! grid assoc-in [(+ row 1) col :south] 1)))))))
 
+(defn recursive-backtracker [x y]
+  (let [directions (shuffle ["N" "E" "S" "W"])
+        no-of-rows (count @grid)
+        no-of-cols (count (first @grid))]
+    (dotimes [direction (count directions)]
+      (let [nx (+ x (lookup-x-carve (get directions direction)))
+            ny (+ y (lookup-y-carve (get directions direction)))]
+        (if (and (<= 0 nx (- no-of-rows 1)) (<= 0 ny (- no-of-cols 1)) (= (:visited (get-in @grid [nx ny])) 0))
+           (cond
+                (= (get directions direction) "N") (do
+                                                     (swap! grid assoc-in [x y :north] 1)
+                                                     (swap! grid assoc-in [nx ny :south] 1)
+                                                     (swap! grid assoc-in [x y :visited] 1)
+                                                     (recursive-backtracker nx ny))
+                (= (get directions direction) "E") (do
+                                                     (swap! grid assoc-in [x y :east] 1)
+                                                     (swap! grid assoc-in [nx ny :west] 1)
+                                                     (swap! grid assoc-in [x y :visited] 1)
+                                                     (recursive-backtracker nx ny))
+                (= (get directions direction) "S") (do
+                                                     (swap! grid assoc-in [x y :south] 1)
+                                                     (swap! grid assoc-in [nx ny :north] 1)
+                                                     (swap! grid assoc-in [x y :visited] 1)
+                                                     (recursive-backtracker nx ny))
+                (= (get directions direction) "W") (do
+                                                     (swap! grid assoc-in [x y :west] 1)
+                                                     (swap! grid assoc-in [nx ny :east] 1)
+                                                     (swap! grid assoc-in [x y :visited] 1)
+                                                     (recursive-backtracker nx ny))))))))
+
+
 ; Maze Generation Entry Function
 ; -------------------------------------------------------------------------------------------------------------------
 (defn carve-passages
@@ -76,45 +107,17 @@
      (if (= row (count @grid))
          @grid
          (do
-             (dotimes [col (count (first @grid))]
-                 (binary-tree row col))
-             (carve-passages (inc row) algorithm)))))
+            (dotimes [col (count (first @grid))]
+                (binary-tree row col))
+            (carve-passages (inc row) algorithm)))))
   ([x y algorithm]
+   {:post [(reset-grid)]}
    (if (= algorithm "rb")
-     (let [directions (shuffle ["N" "E" "S" "W"])
-           no-of-rows (count @grid)
-           no-of-cols (count (first @grid))]
-       (dotimes [direction (count directions)]
-         (let [nx (+ x (lookup-x-carve (get directions direction)))
-               ny (+ y (lookup-y-carve (get directions direction)))]
-           (if (and (<= 0 nx (- no-of-rows 1)) (<= 0 ny (- no-of-cols 1)) (= (:visited (get-in @grid [nx ny])) 0))
-              (cond
-                   (= (get directions direction) "N") (do
-                                                        (swap! grid assoc-in [x y :north] 1)
-                                                        (swap! grid assoc-in [nx ny :south] 1)
-                                                        (swap! grid assoc-in [x y :visited] 1)
-                                                        (println (print-as-text @grid))
-                                                        (carve-passages nx ny "rb"))
-                   (= (get directions direction) "E") (do
-                                                        (swap! grid assoc-in [x y :east] 1)
-                                                        (swap! grid assoc-in [nx ny :west] 1)
-                                                        (swap! grid assoc-in [x y :visited] 1)
-                                                        (println (print-as-text @grid))
-                                                        (carve-passages nx ny "rb"))
-                   (= (get directions direction) "S") (do
-                                                        (swap! grid assoc-in [x y :south] 1)
-                                                        (swap! grid assoc-in [nx ny :north] 1)
-                                                        (swap! grid assoc-in [x y :visited] 1)
-                                                        (println (print-as-text @grid))
-                                                        (carve-passages nx ny "rb"))
-                   (= (get directions direction) "W") (do
-                                                        (swap! grid assoc-in [x y :west] 1)
-                                                        (swap! grid assoc-in [nx ny :east] 1)
-                                                        (swap! grid assoc-in [x y :visited] 1)
-                                                        (println (print-as-text @grid))
-                                                        (carve-passages nx ny "rb"))))))))))
-
-
+     (if (= x -1)
+       @grid
+       (do
+         (recursive-backtracker x y)
+         (carve-passages -1 0 "rb"))))))
 
 ; (def maze-string (print-as-text (carve-passages)))
 ;
