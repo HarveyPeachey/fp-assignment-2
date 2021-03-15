@@ -20,8 +20,11 @@
 (defn reset-grid []
     (reset! grid (make-a-grid 10 10)))
 
-(defn toprow? [row size]
-  (= row (- size 1)))
+(defn toprow? [row no-of-rows]
+  (= row (- no-of-rows 1)))
+
+(defn lastcolumn? [col no-of-cols]
+  (= col (- no-of-cols 1)))
 
 ; Maze Generation Algorithms
 ; -------------------------------------------------------------------------------------------------------------------
@@ -33,16 +36,15 @@
        (cond
            ; above top row return maze
            (= row no-of-rows) @grid
-           ; top row && last cell do nothing
-           (and (toprow? row no-of-rows) (= col (- no-of-cols 1))) 0
+           ; top row && last column do nothing
            ; top row carve east
            (toprow? row no-of-rows) (do
                                         (swap! grid assoc-in [row col :east] 1)
                                         (swap! grid assoc-in [row (+ col 1) :west] 1))
            ; not top row && last column carve north
-           (= col (- no-of-cols 1)) (do
-                                        (swap! grid assoc-in [row col :north] 1)
-                                        (swap! grid assoc-in [(+ row 1) col :south] 1))
+           (lastcolumn? col no-of-cols) (do
+                                            (swap! grid assoc-in [row col :north] 1)
+                                            (swap! grid assoc-in [(+ row 1) col :south] 1))
            ; not top row carve north or east
            :else
            (if (= 0 (rand-int 2))
