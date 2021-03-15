@@ -47,6 +47,7 @@
            ; above top row return maze
            (= row no-of-rows) @grid
            ; top row && last column do nothing
+           (and (toprow? row no-of-rows) (lastcolumn? col no-of-cols)) 0
            ; top row carve east
            (toprow? row no-of-rows) (do
                                         (swap! grid assoc-in [row col :east] 1)
