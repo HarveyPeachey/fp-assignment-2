@@ -35,9 +35,12 @@
      [:ul
       [:li [:a {:href (path-for :items)} "Items of assignment-2"]]
       [:li [:a {:href "/broken/link"} "Broken link"]]]
+     [:p "Binary Tree Maze"]
      [:pre
-      [:p {:style {:line-height "normal"}} (maze-gfx/print-as-text (maze-gen/carve-passages))]]]))
-
+      [:p {:style {:line-height "normal"}} (maze-gfx/print-as-text (maze-gen/carve-passages))]]
+     [:p "Recursive Backtracker Maze"]
+     [:pre
+      [:p {:style {:line-height "normal"}} (maze-gfx/print-as-text (maze-gen/carve-passages 0 0 "rb"))]]]))
 
 
 (defn items-page []
