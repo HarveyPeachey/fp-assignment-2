@@ -164,7 +164,7 @@
       (= direction-name :west) (hash-map :x x, :y (+ y -1)))))
 
 (defn neighbours [x y]
-  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid-rb-2 [x y]) :visited :distance))))
+  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid-rb [x y]) :visited :distance))))
 
 (defn euclidean-distance [x1 y1 x2 y2]
   (Math/sqrt (+ (square (- x2 x1)) (square (- y2 y1)))))
@@ -181,7 +181,7 @@
   (if (is-in-list? neighbour closed-list)
     nil
     (let [g (+ (:g current) 1) h (euclidean-distance (:x neighbour) (:y neighbour) end-x end-y)]
-      (assoc neighbour :g g :f (+ g h) :p (dissoc current :p)))))
+      (assoc neighbour :g g :f (+ g h) :p (- (count closed-list) 1)))))
 
 (defn clean-dupes [open-list]
   (let [sorted-open-list (sort-by (juxt :x :y :f) open-list)]
@@ -191,7 +191,7 @@
         open-list))))
 
 (defn a* [start-x start-y end-x end-y]
-  (let [start-open-list [{:x start-x :y start-y :g 0 :f (euclidean-distance start-x start-y end-x end-y)}]]
+  (let [start-open-list [{:x start-x :y start-y :g 0 :f (euclidean-distance start-x start-y end-x end-y) :p -1}]]
     (loop [open-list start-open-list closed-list []]
       (let [current (lowest-f-score open-list)
             new-open-list (vec (remove #(= % current) open-list))
@@ -200,3 +200,9 @@
            (conj closed-list current)
            (recur (vec (clean-dupes (concat new-open-list (keep #(calc-neighbours % current new-closed-list end-x end-y) (neighbours (:x current) (:y current))))))
                   new-closed-list))))))
+
+(defn retrace-path [a*-paths]
+  (loop [acc [] current-pos (- (count a*-paths) 1)]
+    (if (not= current-pos nil)
+      (recur (conj acc (dissoc (get a*-paths current-pos) :g :f :p)) (:p (get a*-paths current-pos)))
+      (reverse (drop-last acc)))))
