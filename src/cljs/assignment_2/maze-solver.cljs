@@ -50,6 +50,107 @@
                {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
                {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 0}]])
 
+(def grid-rb-2 [[{:west 0, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}]
+                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
+                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
+                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
+                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}]])
+
 (defn square "Returns the squared value of a given number"
   [x]
   (* x x))
@@ -63,7 +164,7 @@
       (= direction-name :west) (hash-map :x x, :y (+ y -1)))))
 
 (defn neighbours [x y]
-  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid-bt [x y]) :visited :distance))))
+  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid-rb-2 [x y]) :visited :distance))))
 
 (defn euclidean-distance [x1 y1 x2 y2]
   (Math/sqrt (+ (square (- x2 x1)) (square (- y2 y1)))))
@@ -76,7 +177,7 @@
 
 (def is-not-in-list? (complement is-in-list?))
 
-(defn work [neighbour current closed-list end-x end-y]
+(defn calc-neighbours [neighbour current closed-list end-x end-y]
   (if (is-in-list? neighbour closed-list)
     nil
     (let [g (+ (:g current) 1) h (euclidean-distance (:x neighbour) (:y neighbour) end-x end-y)]
@@ -97,5 +198,5 @@
             new-closed-list (conj closed-list current)]
         (if (and (= (:x current) end-x) (= (:y current) end-y))
            (conj closed-list current)
-           (recur (vec (clean-dupes (concat new-open-list (keep #(work % current new-closed-list end-x end-y) (neighbours (:x current) (:y current))))))
+           (recur (vec (clean-dupes (concat new-open-list (keep #(calc-neighbours % current new-closed-list end-x end-y) (neighbours (:x current) (:y current))))))
                   new-closed-list))))))
