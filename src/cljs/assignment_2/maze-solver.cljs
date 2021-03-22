@@ -175,8 +175,6 @@
 (defn is-in-list? [item list]
   (some #(and (= (:x item) (:x %)) (= (:y item) (:y %))) list))
 
-(def is-not-in-list? (complement is-in-list?))
-
 (defn calc-neighbours [neighbour current closed-list end-x end-y]
   (if (is-in-list? neighbour closed-list)
     nil
