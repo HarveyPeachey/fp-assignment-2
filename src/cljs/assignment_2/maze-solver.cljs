@@ -58,10 +58,13 @@
       (reverse (drop-last acc)))))
 
 (defn add-path-to-grid [path grid]
-  (loop [grid-with-path grid counter 0]
-    (if (= counter (count path))
-      grid-with-path
-      (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] true) (inc counter)))))
+  (let [path-size (count path)]
+    (loop [grid-with-path grid counter 0]
+      (cond
+        (= counter path-size) grid-with-path
+        (= counter (dec path-size)) (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] "end") (inc counter))
+        (= counter 0) (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] "start") (inc counter))
+        :else (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] true) (inc counter))))))
 
 (defn solve-grid [s-x s-y e-x e-y grid]
   (add-path-to-grid (retrace-path (a* s-x s-y e-x e-y grid)) grid))

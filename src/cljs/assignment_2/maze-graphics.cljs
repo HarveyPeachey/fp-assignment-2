@@ -6,9 +6,16 @@
       (if (= 1 (:east cell))
           "    "
           "   |")
-      (if (= 1 (:east cell))
-          " •  "
-          " • |")))
+      (cond
+        (= "start" (:path cell)) (if (= 1 (:east cell))
+                                     " S  "
+                                     " S |")
+        (= "end" (:path cell)) (if (= 1 (:east cell))
+                                   " E  "
+                                   " E |")
+        :else (if (= 1 (:east cell))
+                  " •  "
+                  " • |"))))
 
 (defn print-cell-bottom [cell]
     (if (= 1 (:south cell))
