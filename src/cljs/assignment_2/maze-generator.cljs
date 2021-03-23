@@ -117,7 +117,6 @@
 (defn carve-passages
   ([] (carve-passages 0 "bt"))
   ([row algorithm]
-   {:post [(reset-grid)]}
    (if (= algorithm "bt")
      (if (= row (count @grid))
          @grid
@@ -126,7 +125,6 @@
                 (binary-tree row col))
             (carve-passages (inc row) algorithm)))))
   ([x y algorithm]
-   {:post [(reset-grid)]}
    (if (= algorithm "rb")
      (if (= x -1)
        @grid
