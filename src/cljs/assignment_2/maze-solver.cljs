@@ -270,6 +270,9 @@
 (defn euclidean-distance [x1 y1 x2 y2]
   (Math/sqrt (+ (square (- x2 x1)) (square (- y2 y1)))))
 
+(defn manhattan-distance [x1 y1 x2 y2]
+  (+ (Math/abs (- x1 x2)) (Math/abs (- y1 y2))))
+
 (defn lowest-f-score [list]
   (first (sort-by :f list)))
 
@@ -279,7 +282,7 @@
 (defn calc-neighbours [neighbour current closed-list end-x end-y]
   (if (is-in-list? neighbour closed-list)
     nil
-    (let [g (+ (:g current) 1) h (euclidean-distance (:x neighbour) (:y neighbour) end-x end-y)]
+    (let [g (+ (:g current) 1) h (manhattan-distance (:x neighbour) (:y neighbour) end-x end-y)]
       (assoc neighbour :g g :f (+ g h) :p (- (count closed-list) 1)))))
 
 (defn clean-dupes [open-list]
@@ -290,7 +293,7 @@
         open-list))))
 
 (defn a* [start-x start-y end-x end-y]
-  (let [start-open-list [{:x start-x :y start-y :g 0 :f (euclidean-distance start-x start-y end-x end-y) :p -1}]]
+  (let [start-open-list [{:x start-x :y start-y :g 0 :f (manhattan-distance start-x start-y end-x end-y) :p -1}]]
     (loop [open-list start-open-list closed-list []]
       (let [current (lowest-f-score open-list)
             new-open-list (vec (remove #(= % current) open-list))
