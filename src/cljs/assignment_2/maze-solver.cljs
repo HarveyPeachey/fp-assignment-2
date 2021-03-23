@@ -1,256 +1,4 @@
-(def grid-rb [[{:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-               {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-               {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-               {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-               {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-               {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-               {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-               {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-               {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-               {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}]])
-
-(def grid-bt [[{:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-               {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-               {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-               {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-               {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-              [{:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-               {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 0}]])
-
-(def grid-rb-2 [[{:west 0, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}]
-                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 1}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}
-                 {:west 0, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 1, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 1, :east 0, :distance -1, :north 0}]])
-
-(def grid-bt-2 [[{:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 0, :visited 0, :east 0, :distance -1, :north 1}
-                 {:west 0, :south 1, :visited 0, :east 0, :distance -1, :north 1}]
-                [{:west 0, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 0, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 1, :distance -1, :north 0}
-                 {:west 1, :south 1, :visited 0, :east 0, :distance -1, :north 0}]])
+(ns assignment-2.maze-solver "Maze Solver")
 
 (defn square "Returns the squared value of a given number"
   [x]
@@ -264,8 +12,8 @@
       (= direction-name :south) (hash-map :x (+ x -1), :y y)
       (= direction-name :west) (hash-map :x x, :y (+ y -1)))))
 
-(defn neighbours [x y]
-  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid-bt-2 [x y]) :visited :distance))))
+(defn neighbours [x y grid]
+  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid [x y]) :visited :distance))))
 
 (defn euclidean-distance [x1 y1 x2 y2]
   (Math/sqrt (+ (square (- x2 x1)) (square (- y2 y1)))))
@@ -292,7 +40,7 @@
         (remove #(= % second) open-list)
         open-list))))
 
-(defn a* [start-x start-y end-x end-y]
+(defn a* [start-x start-y end-x end-y grid]
   (let [start-open-list [{:x start-x :y start-y :g 0 :f (manhattan-distance start-x start-y end-x end-y) :p -1}]]
     (loop [open-list start-open-list closed-list []]
       (let [current (lowest-f-score open-list)
@@ -300,7 +48,7 @@
             new-closed-list (conj closed-list current)]
         (if (and (= (:x current) end-x) (= (:y current) end-y))
            (conj closed-list current)
-           (recur (vec (clean-dupes (concat new-open-list (keep #(calc-neighbours % current new-closed-list end-x end-y) (neighbours (:x current) (:y current))))))
+           (recur (vec (clean-dupes (concat new-open-list (keep #(calc-neighbours % current new-closed-list end-x end-y) (neighbours (:x current) (:y current) grid)))))
                   new-closed-list))))))
 
 (defn retrace-path [a*-paths]
@@ -308,3 +56,12 @@
     (if (not= current-pos nil)
       (recur (conj acc (dissoc (get a*-paths current-pos) :g :f :p)) (:p (get a*-paths current-pos)))
       (reverse (drop-last acc)))))
+
+(defn add-path-to-grid [path grid]
+  (loop [grid-with-path grid counter 0]
+    (if (= counter (count path))
+      grid-with-path
+      (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] true) (inc counter)))))
+
+(defn solve-grid [s-x s-y e-x e-y grid]
+  (add-path-to-grid (retrace-path (a* s-x s-y e-x e-y grid)) grid))
