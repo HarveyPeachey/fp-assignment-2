@@ -2,9 +2,13 @@
   (:require [clojure.string :as str]))
 
 (defn print-cell-body [cell]
-    (if (= 1 (:east cell))
-        "    "
-        "   |"))
+    (if (nil? (:path cell))
+      (if (= 1 (:east cell))
+          "    "
+          "   |")
+      (if (= 1 (:east cell))
+          " •  "
+          " • |")))
 
 (defn print-cell-bottom [cell]
     (if (= 1 (:south cell))
