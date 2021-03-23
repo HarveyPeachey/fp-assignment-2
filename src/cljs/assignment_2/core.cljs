@@ -1,6 +1,6 @@
 (ns assignment-2.core
   (:require
-   [reagent.core :as reagent :refer [atom]]
+   [reagent.core :as reagent]
    [reagent.dom :as rdom]
    [reagent.session :as session]
    [reitit.frontend :as reitit]
@@ -28,23 +28,49 @@
 
 ;; -------------------------
 ;; Page components
+(def is-bt? (reagent/atom true))
+(def maze-size (reagent/atom  10))
 
 (defn generator-page []
   (fn []
     [:span.main
-     [:h1 "Welcome To The World of Mazes"]
-     [:ul
-      [:li [:a {:href (path-for :items)} "Items of assignment-2"]]
-      [:li [:a {:href "/broken/link"} "Broken link"]]]
-     [:p "Binary Tree Maze"]
-     [:pre
-      [:p {:style {:line-height "normal"}} (do (maze-gen/reset-grid) (maze-gfx/print-as-text (maze-gen/carve-passages)))]
+     [:h1 "Maze Generator" " "]
+     [:select {:on-change #(swap! is-bt? not)}
+      [:option {:value "bt"} "Binary Tree"]
+      [:option {:value "rb" :selected (if (not @is-bt?) "selected")} "Recursive Backtracker"]]
+     [:input {:type "number"
+              :min "3"
+              :max "100"
+              :value @maze-size
+              :on-change #(reset! maze-size (js/parseInt (-> % .-target .-value)))}]
+     (if (= @is-bt? true)
+       [:div
+        [:p "Binary Tree Maze"]
+        [:pre
+         [:p {:style {:line-height "normal"
+                      :zoom "0.8"}} (do
+                                      (maze-gen/reset-grid @maze-size)
+                                      (maze-gfx/print-as-text (maze-gen/carve-passages)))]]]
+       [:div
+        [:p "Recursive Backtracker Maze"]
+        [:pre
+         [:p {:style {:line-height "normal"
+                      :zoom "0.8"}} (do
+                                      (maze-gen/reset-grid @maze-size)
+                                      (maze-gfx/print-as-text (maze-gen/carve-passages 0 0 "rb")))]]])]))
 
-      [:p {:style {:line-height "normal"}} (maze-gfx/print-as-text (maze-slv/solve-grid 0 0 0 9 @grid))]]
-     [:p "Recursive Backtracker Maze"]
+(defn solver-page []
+  (fn []
+    [:span.main
+     [:h1 "Maze Solver"]
+     [:select
+      [:option {:value "0"} "Cool Maze"]
+      [:option {:value "1"} "Dank Maze"]]
+     (if (= @is-bt? true)
+       [:p "Binary Tree Maze"]
+       [:p "Recursive Backtracker Maze"])
      [:pre
-      [:p {:style {:line-height "normal"}} (do (maze-gen/reset-grid) (maze-gfx/print-as-text (maze-gen/carve-passages 0 0 "rb")))]
-      [:p {:style {:line-height "normal"}} (maze-gfx/print-as-text (maze-slv/solve-grid 0 0 0 9 @grid))]]]))
+      [:p {:style {:line-height "normal" :zoom "0.8"}} (maze-gfx/print-as-text (maze-slv/solve-grid 0 0 (rand-int (count @grid)) (rand-int (count @grid)) @grid))]]]))
 
 (defn items-page []
   (fn []
@@ -63,11 +89,6 @@
       [:span.main
        [:h1 (str "Item " item " of assignment-2")]
        [:p [:a {:href (path-for :items)} "Back to the list of items"]]])))
-
-
-(defn solver-page []
-  (fn [] [:span.main
-          [:h1 "Maze Solver"]]))
 
 
 ;; -------------------------

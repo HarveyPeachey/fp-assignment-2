@@ -15,10 +15,10 @@
           grid
           (recur (inc count) (conj grid (make-a-row columns))))))
 
-(def grid (atom (make-a-grid 20 20)))
+(def grid (atom (make-a-grid 10 10)))
 
-(defn reset-grid []
-    (reset! grid (make-a-grid 20 20)))
+(defn reset-grid [size]
+  (reset! grid (make-a-grid size size)))
 
 ; Maze Helper Functions
 ; -------------------------------------------------------------------------------------------------------------------
