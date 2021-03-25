@@ -28,8 +28,33 @@
 
 ;; -------------------------
 ;; Page components
+
+(defn to-json [v] (.stringify js/JSON v))
+
+(defn download-object-as-json [value export-name]
+ (let [data-blob (js/Blob. #js [(to-json value)] #js {:type "application/json"})
+       link (.createElement js/document "a")]
+   (set! (.-href link) (.createObjectURL js/URL data-blob))
+   (.setAttribute link "download" export-name)
+   (.appendChild (.-body js/document) link)
+   (.click link)
+   (.removeChild (.-body js/document) link)
+   (.revokeObjectURL js/URL data-blob)))
+
+(defn handle-file-upload [e]
+  (let [reader (js/FileReader.)]
+    (set! (.-onload reader) #(js/console.log (-> % .-target .-result)))
+    (.readAsText reader (aget (-> e .-target .-files) 0))))
+
 (def is-bt? (reagent/atom true))
-(def maze-size (reagent/atom  10))
+(def maze-size (reagent/atom 10))
+(def mazes (reagent/atom []))
+
+(defn save-maze []
+  (swap! mazes conj {:id (count @mazes) :name "Cool Maze" :maze @grid}))
+
+(defn clear-saved-mazes []
+  (reset! mazes []))
 
 (defn generator-page []
   (fn []
@@ -43,6 +68,11 @@
               :max "100"
               :value @maze-size
               :on-change #(reset! maze-size (js/parseInt (-> % .-target .-value)))}]
+     [:input {:type "text" :placeholder "Enter Maze Name"}]
+     [:input {:type "button" :value "Save Maze" :on-click #(save-maze)}]
+     [:input {:type "button" :value "Clear Mazes" :on-click #(clear-saved-mazes)}]
+     [:input {:type "button" :value "Export Mazes" :on-click #(download-object-as-json (clj->js  @mazes) "mazes.json")}]
+     [:div "Amount of saved mazes: " (count @mazes)]
      (if (= @is-bt? true)
        [:div
         [:p "Binary Tree Maze"]
@@ -64,8 +94,9 @@
     [:span.main
      [:h1 "Maze Solver"]
      [:select
-      [:option {:value "0"} "Cool Maze"]
-      [:option {:value "1"} "Dank Maze"]]
+      (for [item @mazes]
+       ^{:key (:id item)} [:option {:value (:id item)} (:name item)])]
+     [:input {:type "file" :on-change #(handle-file-upload %)}]
      (if (= @is-bt? true)
        [:p "Binary Tree Maze"]
        [:p "Recursive Backtracker Maze"])
