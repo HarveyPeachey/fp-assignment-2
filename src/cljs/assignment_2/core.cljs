@@ -16,9 +16,6 @@
 (def router
   (reitit/router
    [["/" :index]
-    ["/items"
-     ["" :items]
-     ["/:item-id" :item]]
     ["/solver" :solver]]))
 
 (defn path-for [route & [params]]
@@ -48,18 +45,24 @@
 
 (def is-bt? (reagent/atom true))
 (def maze-size (reagent/atom 10))
+(def mazes-generated (reagent/atom ""))
 (def mazes (reagent/atom []))
 
 (defn save-maze []
-  (swap! mazes conj {:id (count @mazes) :name "Cool Maze" :maze @grid}))
+  (let [id (count @mazes)
+        type (if is-bt?
+               "Binary Tree"
+               "Recursive Backtracker")]
+    (swap! mazes conj {:id id :name "Cool Maze" :type type :size @maze-size :maze @grid})))
 
 (defn clear-saved-mazes []
-  (reset! mazes []))
+  (do
+    (reset! mazes [])
+    (maze-gen/reset-grid @maze-size)))
 
-(defn generator-page []
+(defn generator-config []
   (fn []
-    [:span.main
-     [:h1 "Maze Generator" " "]
+    [:div
      [:select {:on-change #(swap! is-bt? not)}
       [:option {:value "bt"} "Binary Tree"]
       [:option {:value "rb" :selected (if (not @is-bt?) "selected")} "Recursive Backtracker"]]
@@ -72,7 +75,13 @@
      [:input {:type "button" :value "Save Maze" :on-click #(save-maze)}]
      [:input {:type "button" :value "Clear Mazes" :on-click #(clear-saved-mazes)}]
      [:input {:type "button" :value "Export Mazes" :on-click #(download-object-as-json (clj->js  @mazes) "mazes.json")}]
-     [:div "Amount of saved mazes: " (count @mazes)]
+     [:div "Amount of saved mazes: " (count @mazes)]]))
+
+(defn generator-page []
+  (fn []
+    [:span.main
+     [:h1 "Maze Generator" " "]
+     [generator-config]
      (if (= @is-bt? true)
        [:div
         [:p "Binary Tree Maze"]
@@ -87,40 +96,34 @@
          [:p {:style {:line-height "normal"
                       :zoom "0.8"}} (do
                                       (maze-gen/reset-grid @maze-size)
-                                      (maze-gfx/print-as-text (maze-gen/carve-passages 0 0 "rb")))]]])]))
+                                      (maze-gfx/print-as-text (maze-gen/carve-passages 0 0 "rb")))]]])
+     [:div "Amount of Manual Generations: " (count @mazes-generated)]
+     [:input {:type "button" :value "Generate" :on-click #(swap! mazes-generated inc)}]]))
+
 
 (defn solver-page []
-  (fn []
-    [:span.main
-     [:h1 "Maze Solver"]
-     [:select
-      (for [item @mazes]
-       ^{:key (:id item)} [:option {:value (:id item)} (:name item)])]
-     [:input {:type "file" :on-change #(handle-file-upload %)}]
-     (if (= @is-bt? true)
-       [:p "Binary Tree Maze"]
-       [:p "Recursive Backtracker Maze"])
-     [:pre
-      [:p {:style {:line-height "normal" :zoom "0.8"}} (maze-gfx/print-as-text (maze-slv/solve-grid 0 0 (rand-int (count @grid)) (rand-int (count @grid)) @grid))]]]))
-
-(defn items-page []
-  (fn []
-    [:span.main
-     [:h1 "The items of assignment-2"]
-     [:ul (map (fn [item-id]
-                 [:li {:name (str "item-" item-id) :key (str "item-" item-id)}
-                  [:a {:href (path-for :item {:item-id item-id})} "Item: " item-id]])
-               (range 1 60))]]))
-
-
-(defn item-page []
-  (fn []
-    (let [routing-data (session/get :route)
-          item (get-in routing-data [:route-params :item-id])]
+  (let [solve-coord (reagent/atom {:start-x 0 :start-y 0 :end-x 0 :end-y 0})]
+    (fn []
       [:span.main
-       [:h1 (str "Item " item " of assignment-2")]
-       [:p [:a {:href (path-for :items)} "Back to the list of items"]]])))
-
+       [:h1 "Maze Solver"]
+       [:select
+        (for [item @mazes]
+         ^{:key (:id item)} [:option {:value (:id item)} (:name item)])]
+       [:input {:type "button" :value "Load Maze"}]
+       [:input {:type "file" :on-change #(handle-file-upload %)}]
+       (if (= @is-bt? true)
+         [:p "Binary Tree Maze"]
+         [:p "Recursive Backtracker Maze"])
+       [:pre
+        [:p {:style {:line-height "normal" :zoom "0.8"}} (maze-gfx/print-as-text (maze-slv/solve-grid (:start-x @solve-coord)
+                                                                                                      (:start-y @solve-coord)
+                                                                                                      (:end-x @solve-coord)
+                                                                                                      (:end-y @solve-coord)
+                                                                                                      @grid))]]
+       [:input {:type "number" :value (:start-x @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :start-x (js/parseInt (-> % .-target .-value)))}]
+       [:input {:type "number" :value (:start-y @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :start-y (js/parseInt (-> % .-target .-value)))}]
+       [:input {:type "number" :value (:end-x @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :end-x (js/parseInt (-> % .-target .-value)))}]
+       [:input {:type "number" :value (:end-y @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :end-y (js/parseInt (-> % .-target .-value)))}]])))
 
 ;; -------------------------
 ;; Translate routes -> page components
@@ -128,9 +131,7 @@
 (defn page-for [route]
   (case route
     :index #'generator-page
-    :solver #'solver-page
-    :items #'items-page
-    :item #'item-page))
+    :solver #'solver-page))
 
 
 ;; -------------------------
