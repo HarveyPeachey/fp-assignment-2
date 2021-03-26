@@ -47,18 +47,22 @@
 (def maze-size (reagent/atom 10))
 (def mazes-generated (reagent/atom ""))
 (def mazes (reagent/atom []))
+(def maze-name (reagent/atom "Default Name"))
 
 (defn save-maze []
   (let [id (count @mazes)
         type (if is-bt?
                "Binary Tree"
                "Recursive Backtracker")]
-    (swap! mazes conj {:id id :name "Cool Maze" :type type :size @maze-size :maze @grid})))
+    (do
+      (swap! mazes conj {:id id :name @maze-name :type type :size @maze-size :maze @grid})
+      (reset! maze-name "Default Name"))))
 
 (defn clear-saved-mazes []
   (do
     (reset! mazes [])
     (maze-gen/reset-grid @maze-size)))
+
 
 (defn generator-config []
   (fn []
@@ -71,10 +75,10 @@
               :max "100"
               :value @maze-size
               :on-change #(reset! maze-size (js/parseInt (-> % .-target .-value)))}]
-     [:input {:type "text" :placeholder "Enter Maze Name"}]
+     [:input {:type "text" :placeholder "Enter Maze Name" :value (if (= @maze-name "Default Name") "" @maze-name) :on-change #(reset! maze-name (-> % .-target .-value))}]
      [:input {:type "button" :value "Save Maze" :on-click #(save-maze)}]
-     [:input {:type "button" :value "Clear Mazes" :on-click #(clear-saved-mazes)}]
-     [:input {:type "button" :value "Export Mazes" :on-click #(download-object-as-json (clj->js  @mazes) "mazes.json")}]
+     [:input {:type "button" :value "Clear Saved Mazes" :on-click #(clear-saved-mazes)}]
+     [:input {:type "button" :value "Export Saved Mazes" :on-click #(download-object-as-json (clj->js  @mazes) "mazes.json")}]
      [:div "Amount of saved mazes: " (count @mazes)]]))
 
 (defn generator-page []
@@ -100,30 +104,43 @@
      [:div "Amount of Manual Generations: " (count @mazes-generated)]
      [:input {:type "button" :value "Generate" :on-click #(swap! mazes-generated inc)}]]))
 
+(defn load-maze [e solve-coord maze-details]
+  (let [maze-id (js/parseInt (.-value (aget (.-target e) 0)))
+        {maze-name :name maze-type :type maze-size :size maze :maze} (get @mazes maze-id)]
+    (do
+      (.preventDefault e)
+      (reset! grid maze)
+      (reset! solve-coord {:start-x 0 :start-y 0 :end-x 0 :end-y 0})
+      (reset! maze-details {:name maze-name :type maze-type :size maze-size}))))
 
 (defn solver-page []
-  (let [solve-coord (reagent/atom {:start-x 0 :start-y 0 :end-x 0 :end-y 0})]
-    (fn []
-      [:span.main
-       [:h1 "Maze Solver"]
-       [:select
-        (for [item @mazes]
-         ^{:key (:id item)} [:option {:value (:id item)} (:name item)])]
-       [:input {:type "button" :value "Load Maze"}]
-       [:input {:type "file" :on-change #(handle-file-upload %)}]
-       (if (= @is-bt? true)
-         [:p "Binary Tree Maze"]
-         [:p "Recursive Backtracker Maze"])
-       [:pre
-        [:p {:style {:line-height "normal" :zoom "0.8"}} (maze-gfx/print-as-text (maze-slv/solve-grid (:start-x @solve-coord)
-                                                                                                      (:start-y @solve-coord)
-                                                                                                      (:end-x @solve-coord)
-                                                                                                      (:end-y @solve-coord)
-                                                                                                      @grid))]]
-       [:input {:type "number" :value (:start-x @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :start-x (js/parseInt (-> % .-target .-value)))}]
-       [:input {:type "number" :value (:start-y @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :start-y (js/parseInt (-> % .-target .-value)))}]
-       [:input {:type "number" :value (:end-x @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :end-x (js/parseInt (-> % .-target .-value)))}]
-       [:input {:type "number" :value (:end-y @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :end-y (js/parseInt (-> % .-target .-value)))}]])))
+  (let [solve-coord (reagent/atom {:start-x 0 :start-y 0 :end-x 0 :end-y 0})
+        maze-details (reagent/atom {:name nil :type nil :size nil})]
+    (do
+      (println maze-name)
+      (fn []
+        [:span.main
+         [:h1 "Maze Solver"]
+         [:form {:on-submit #(load-maze % solve-coord maze-details)}
+          [:select
+           (for [item @mazes]
+            ^{:key (:id item)} [:option {:value (:id item)} (:name item)])]
+          [:input {:type "submit" :value "Load Maze"}]]
+         [:input {:type "file" :on-change #(handle-file-upload %)}]
+         (cond
+           (some? (:name @maze-details)) [:p "Maze Name: " (:name @maze-details) " | Maze Type: " (:type @maze-details) " | Maze Size: " (:size @maze-details)]
+           (= @is-bt? true) [:p "Binary Tree Maze"]
+           :else [:p "Recursive Backtracker Maze"])
+         [:pre
+          [:p {:style {:line-height "normal" :zoom "0.8"}} (maze-gfx/print-as-text (maze-slv/solve-grid (:start-x @solve-coord)
+                                                                                                        (:start-y @solve-coord)
+                                                                                                        (:end-x @solve-coord)
+                                                                                                        (:end-y @solve-coord)
+                                                                                                        @grid))]]
+         [:input {:type "number" :value (:start-x @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :start-x (js/parseInt (-> % .-target .-value)))}]
+         [:input {:type "number" :value (:start-y @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :start-y (js/parseInt (-> % .-target .-value)))}]
+         [:input {:type "number" :value (:end-x @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :end-x (js/parseInt (-> % .-target .-value)))}]
+         [:input {:type "number" :value (:end-y @solve-coord) :min 0 :max (dec (count @grid)) :on-change #(swap! solve-coord assoc :end-y (js/parseInt (-> % .-target .-value)))}]]))))
 
 ;; -------------------------
 ;; Translate routes -> page components
