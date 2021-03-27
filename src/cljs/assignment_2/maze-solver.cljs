@@ -40,16 +40,23 @@
         (remove #(= % second) open-list)
         open-list))))
 
+(defn is-in-grid? [start-x start-y end-x end-y grid]
+  (let [no-of-rows (count grid)
+        no-of-cols (count (first grid))]
+    (and (<= 0 start-x (- no-of-rows 1)) (<= 0 start-y (- no-of-cols 1)) (<= 0 end-x (- no-of-rows 1)) (<= 0 end-y (- no-of-cols 1)))))
+
 (defn a* [start-x start-y end-x end-y grid]
   (let [start-open-list [{:x start-x :y start-y :g 0 :f (manhattan-distance start-x start-y end-x end-y) :p -1}]]
-    (loop [open-list start-open-list closed-list []]
-      (let [current (lowest-f-score open-list)
-            new-open-list (vec (remove #(= % current) open-list))
-            new-closed-list (conj closed-list current)]
-        (if (and (= (:x current) end-x) (= (:y current) end-y))
-           (conj closed-list current)
-           (recur (vec (clean-dupes (concat new-open-list (keep #(calc-neighbours % current new-closed-list end-x end-y) (neighbours (:x current) (:y current) grid)))))
-                  new-closed-list))))))
+    (if (is-in-grid? start-x start-y end-x end-y grid)
+      (loop [open-list start-open-list closed-list []]
+        (let [current (lowest-f-score open-list)
+              new-open-list (vec (remove #(= % current) open-list))
+              new-closed-list (conj closed-list current)]
+          (if (and (= (:x current) end-x) (= (:y current) end-y))
+             (conj closed-list current)
+             (recur (vec (clean-dupes (concat new-open-list (keep #(calc-neighbours % current new-closed-list end-x end-y) (neighbours (:x current) (:y current) grid)))))
+                  new-closed-list))))
+      [{:x 0 :y 0 :p -1}])))
 
 (defn retrace-path [a*-paths]
   (loop [acc [] current-pos (- (count a*-paths) 1)]
@@ -66,5 +73,6 @@
         (= counter 0) (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] "start") (inc counter))
         :else (recur (assoc-in grid-with-path [(:x (nth path counter)) (:y (nth path counter)) :path] true) (inc counter))))))
 
-(defn solve-grid [s-x s-y e-x e-y grid]
-  (add-path-to-grid (retrace-path (a* s-x s-y e-x e-y grid)) grid))
+(defn solve-grid [start-x start-y end-x end-y grid]
+  (let [a*-paths (a* start-x start-y end-x end-y grid)]
+    (add-path-to-grid (retrace-path a*-paths) grid)))
