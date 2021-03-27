@@ -80,37 +80,20 @@
                   (= (get directions direction) "N") (do
                                                        (swap! grid assoc-in [x y :north] 1)
                                                        (swap! grid assoc-in [nx ny :south] 1)
-                                                       ; (println (print-as-text @grid))
-                                                       ; (print x)(print " ")(println y)
-                                                       ; (print nx)(print " ")(println ny)
-                                                       ; (println (:visited (get-in @grid [nx ny])))
                                                        (recursive-backtracker nx ny))
                   (= (get directions direction) "E") (do
                                                        (swap! grid assoc-in [x y :east] 1)
                                                        (swap! grid assoc-in [nx ny :west] 1)
                                                        (swap! grid assoc-in [x y :visited] 1)
-                                                       ; (println (print-as-text @grid))
-                                                       ; (print x)(print " ")(println y)
-                                                       ; (print nx)(print " ")(println ny)
-                                                       ; (println (:visited (get-in @grid [nx ny])))
                                                        (recursive-backtracker nx ny))
                   (= (get directions direction) "S") (do
                                                        (swap! grid assoc-in [x y :south] 1)
                                                        (swap! grid assoc-in [nx ny :north] 1)
-                                                       ; (println (print-as-text @grid))
-                                                       ; (print x)(print " ")(println y)
-                                                       ; (print nx)(print " ")(println ny)
-                                                       ; (println (:visited (get-in @grid [nx ny])))
                                                        (recursive-backtracker nx ny))
                   (= (get directions direction) "W") (do
                                                        (swap! grid assoc-in [x y :west] 1)
                                                        (swap! grid assoc-in [nx ny :east] 1)
-                                                       ; (println (print-as-text @grid))
-                                                       ; (print x)(print " ")(println y)
-                                                       ; (print nx)(print " ")(println ny)
-                                                       ; (println (:visited (get-in @grid [nx ny])))
                                                        (recursive-backtracker nx ny)))))))))
-
 
 ; Maze Generation Entry Function
 ; -------------------------------------------------------------------------------------------------------------------
