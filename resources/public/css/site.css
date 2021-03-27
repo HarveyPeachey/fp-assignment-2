@@ -31,3 +31,28 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.maze-display {
+  max-height: 857.5px;
+  overflow: auto;
+  line-height: normal;
+  zoom: 0.8;
+  text-align: center;
+}
+
+.maze-config, .maze-info {
+  height: 54px;
+}
+
+.maze-info {
+  text-align: center;
+}
+
+.generate-button {
+  text-align: center;
+}
+
+.solver-coords {
+  display: flex;
+  justify-content: space-around;
+}
