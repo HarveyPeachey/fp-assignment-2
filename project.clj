@@ -14,13 +14,14 @@
                  [yogthos/config "1.1.7"]
                  [org.clojure/clojurescript "1.10.773"
                   :scope "provided"]
-                 [metosin/reitit "0.5.12"]                 
+                 [metosin/reitit "0.5.12"]
                  [pez/clerk "1.0.0"]
                  [venantius/accountant "0.2.5"
-                  :exclusions [org.clojure/tools.reader]]]
+                  :exclusions [org.clojure/tools.reader]]
+                 [hazard "0.3.0"]]
 
   :jvm-opts ["-Xmx1G"]
-  
+
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]
             [lein-asset-minifier "0.4.6"
@@ -92,7 +93,7 @@
                                   [nrepl "0.8.3"]
                                   [thheller/shadow-cljs "2.11.22"]
                                   [pjstadig/humane-test-output "0.10.0"]
-                                  
+
  ]
 
                    :source-paths ["env/dev/clj"]

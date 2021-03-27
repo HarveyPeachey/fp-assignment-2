@@ -6,9 +6,11 @@
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
    [accountant.core :as accountant]
+   [hazard.core :as hazard]
    [assignment-2.maze-generator :as maze-gen :refer [grid]]
    [assignment-2.maze-graphics :as maze-gfx]
-   [assignment-2.maze-solver :as maze-slv]))
+   [assignment-2.maze-solver :as maze-slv]
+   [assignment-2.maze-names :as maze-names :refer [name-list]]))
 
 ;; -------------------------
 ;; Routes
@@ -30,7 +32,7 @@
 (def maze-size (reagent/atom 10))
 (def mazes-generated (reagent/atom ""))
 (def mazes (reagent/atom []))
-(def maze-name (reagent/atom "Default Name"))
+(def maze-name (reagent/atom ""))
 
 (defn to-json [v] (.stringify js/JSON v))
 
@@ -56,8 +58,8 @@
   (let [id (count @mazes)
         type (if @is-bt? "Binary Tree" "Recursive Backtracker")]
     (do
-      (swap! mazes conj {:id id :name @maze-name :type type :size @maze-size :maze @grid})
-      (reset! maze-name "Default Name"))))
+      (swap! mazes conj {:id id :name (if (= @maze-name "") (hazard/words name-list 1) @maze-name) :type type :size @maze-size :maze @grid})
+      (reset! maze-name ""))))
 
 (defn clear-saved-mazes []
   (do
@@ -87,7 +89,7 @@
               :max "100"
               :value @maze-size
               :on-change #(reset! maze-size (js/parseInt (get-input-value %)))}]
-     [:input {:type "text" :placeholder "Enter Maze Name" :value (if (= @maze-name "Default Name") "" @maze-name) :on-change #(reset! maze-name (get-input-value %))}]
+     [:input {:type "text" :placeholder "Enter Maze Name" :value (if (= @maze-name "") "" @maze-name) :on-change #(reset! maze-name (get-input-value %))}]
      [:input {:type "button" :value "Save Maze" :on-click #(save-maze)}]
      [:input {:type "button" :value "Clear Saved Mazes" :on-click #(clear-saved-mazes)}]
      [:input {:type "button" :value "Export Saved Mazes" :on-click #(download-object-as-json (clj->js {:mazes @mazes}) "mazes.json")}]]))
