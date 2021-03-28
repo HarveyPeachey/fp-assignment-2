@@ -93,24 +93,24 @@
         (let [nx (+ x (lookup-x-carve (get directions direction)))
               ny (+ y (lookup-y-carve (get directions direction)))]
           (if (and (<= 0 nx (- no-of-rows 1)) (<= 0 ny (- no-of-cols 1)) (= (:visited (get-in @grid [nx ny])) 0))
-             (cond
-                  (= (get directions direction) "N") (do
-                                                       (swap! grid assoc-in [x y :north] 1)
-                                                       (swap! grid assoc-in [nx ny :south] 1)
-                                                       (recursive-backtracker nx ny))
-                  (= (get directions direction) "E") (do
-                                                       (swap! grid assoc-in [x y :east] 1)
-                                                       (swap! grid assoc-in [nx ny :west] 1)
-                                                       (swap! grid assoc-in [x y :visited] 1)
-                                                       (recursive-backtracker nx ny))
-                  (= (get directions direction) "S") (do
-                                                       (swap! grid assoc-in [x y :south] 1)
-                                                       (swap! grid assoc-in [nx ny :north] 1)
-                                                       (recursive-backtracker nx ny))
-                  (= (get directions direction) "W") (do
-                                                       (swap! grid assoc-in [x y :west] 1)
-                                                       (swap! grid assoc-in [nx ny :east] 1)
-                                                       (recursive-backtracker nx ny)))))))))
+            (cond
+              (= (get directions direction) "N") (do
+                                                   (swap! grid assoc-in [x y :north] 1)
+                                                   (swap! grid assoc-in [nx ny :south] 1)
+                                                   (recursive-backtracker nx ny))
+              (= (get directions direction) "E") (do
+                                                   (swap! grid assoc-in [x y :east] 1)
+                                                   (swap! grid assoc-in [nx ny :west] 1)
+                                                   (swap! grid assoc-in [x y :visited] 1)
+                                                   (recursive-backtracker nx ny))
+              (= (get directions direction) "S") (do
+                                                   (swap! grid assoc-in [x y :south] 1)
+                                                   (swap! grid assoc-in [nx ny :north] 1)
+                                                   (recursive-backtracker nx ny))
+              (= (get directions direction) "W") (do
+                                                   (swap! grid assoc-in [x y :west] 1)
+                                                   (swap! grid assoc-in [nx ny :east] 1)
+                                                   (recursive-backtracker nx ny)))))))))
 
 ; Maze Generation Entry Function
 ; -------------------------------------------------------------------------------------------------------------------
