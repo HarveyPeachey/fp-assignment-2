@@ -41,30 +41,24 @@
 (defn binary-tree
   ([row] (binary-tree row 0))
   ([row col]
-   ; store number of rows and number of columns
    (let [no-of-rows (count @grid) no-of-cols (count (first @grid))]
      (cond
-       ; above top row return maze
        (= row no-of-rows) @grid
-       ; top row && last column do nothing
        (and (toprow? row no-of-rows) (lastcolumn? col no-of-cols)) 0
-       ; top row carve east
        (toprow? row no-of-rows) (do
                                  (swap! grid assoc-in [row col :east] 1)
-                                 (swap! grid assoc-in [row (+ col 1) :west] 1))
-       ; not top row && last column carve north
+                                 (swap! grid assoc-in [row (inc col) :west] 1))
        (lastcolumn? col no-of-cols) (do
                                      (swap! grid assoc-in [row col :north] 1)
-                                     (swap! grid assoc-in [(+ row 1) col :south] 1))
-       ; not top row carve north or east
+                                     (swap! grid assoc-in [(inc row) col :south] 1))
        :else
        (if (= 0 (rand-int 2))
          (do
            (swap! grid assoc-in [row col :east] 1)
-           (swap! grid assoc-in [row (+ col 1) :west] 1))
+           (swap! grid assoc-in [row (inc col) :west] 1))
          (do
            (swap! grid assoc-in [row col :north] 1)
-           (swap! grid assoc-in [(+ row 1) col :south] 1)))))))
+           (swap! grid assoc-in [(inc row) col :south] 1)))))))
 
 (defn sidewinder [row]
   (let [no-of-rows (count @grid)
@@ -76,11 +70,11 @@
           (true? carvenorth?) (do
                                 (let [cell (+ run-start (rand-int (inc (- col run-start))))]
                                   (swap! grid assoc-in [row cell :north] 1)
-                                  (swap! grid assoc-in [(+ row 1) cell :south] 1)
+                                  (swap! grid assoc-in [(inc row) cell :south] 1)
                                   (recur (inc col) (inc col))))
           (< (inc col) no-of-cols) (do
                                      (swap! grid assoc-in [row col :east] 1)
-                                     (swap! grid assoc-in [row (+ col 1) :west] 1)
+                                     (swap! grid assoc-in [row (inc col) :west] 1)
                                      (recur run-start (inc col))))))))
 
 (defn recursive-backtracker [x y]
@@ -132,9 +126,3 @@
        (do
          (recursive-backtracker x y)
          (carve-passages -1 0 "rb"))))))
-
-; (def maze-string (print-as-text (carve-passages)))
-;
-; (def maze (map (partial apply str) (partition 17 maze-string)))
-;
-; (map #(.fillText ctx % 100 %2) maze (iterate #(+ % 10) 10))
