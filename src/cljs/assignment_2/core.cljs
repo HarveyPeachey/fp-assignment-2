@@ -28,7 +28,7 @@
 ;; -------------------------
 ;; Page Utilities
 
-(def is-bt? (reagent/atom true))
+(def algorithm (reagent/atom "Binary Tree"))
 (def maze-size (reagent/atom 10))
 (def mazes-generated (reagent/atom ""))
 (def mazes (reagent/atom []))
@@ -56,7 +56,7 @@
 
 (defn save-maze []
   (let [id (count @mazes)
-        type (if @is-bt? "Binary Tree" "Recursive Backtracker")]
+        type @algorithm]
     (do
       (swap! mazes conj {:id id :name (if (= @maze-name "") (hazard/words name-list 1) @maze-name) :type type :size @maze-size :maze @grid})
       (reset! maze-name ""))))
@@ -82,9 +82,10 @@
   (fn []
     [:div.maze-menu
      [:div.maze-settings
-      [:select {:on-change #(swap! is-bt? not)}
-       [:option {:value "bt"} "Binary Tree"]
-       [:option {:value "rb" :selected (if (not @is-bt?) "selected")} "Recursive Backtracker"]]
+      [:select {:on-change #(reset! algorithm (get-input-value %))}
+       [:option {:value "Binary Tree" :selected (if (= @algorithm "Binary Tree") "selected") } "Binary Tree"]
+       [:option {:value "Sidewinder" :selected (if (= @algorithm "Sidewinder") "selected")} "Sidewinder"]
+       [:option {:value "Recursive Backtracker" :selected (if (= @algorithm "Recursive Backtracker") "selected")} "Recursive Backtracker"]]
       [:input {:type "number"
                :min "3"
                :max "100"
@@ -106,7 +107,10 @@
       [:pre
        [:p.maze-display (do
                           (maze-gen/reset-grid @maze-size)
-                          (maze-gfx/print-as-text (if @is-bt? (maze-gen/carve-passages) (maze-gen/carve-passages (rand-int @maze-size) (rand-int @maze-size) "rb"))))]]]
+                          (maze-gfx/print-as-text (cond
+                                                    (= @algorithm "Binary Tree") (maze-gen/carve-passages 0 "bt")
+                                                    (= @algorithm "Sidewinder") (maze-gen/carve-passages 0 "sw")
+                                                    (= @algorithm "Recursive Backtracker") (maze-gen/carve-passages (rand-int @maze-size) (rand-int @maze-size) "rb"))))]]]
 
      [:div.generate-button
       [:p [:b "Amount of Manual Generations: "] (count @mazes-generated)]
@@ -126,7 +130,7 @@
 
 (defn solver-page []
   (let [solve-coord (reagent/atom {:start-x 0 :start-y 0 :end-x 0 :end-y 0})
-        maze-details (reagent/atom {:name nil :type (if @is-bt? "Binary Tree" "Recursive Backtracker") :size (count @grid)})]
+        maze-details (reagent/atom {:name nil :type @algorithm :size (count @grid)})]
     (fn []
       [:main.main
        [:h1 "Maze Solver"]
