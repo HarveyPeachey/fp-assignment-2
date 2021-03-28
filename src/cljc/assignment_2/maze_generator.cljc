@@ -66,23 +66,22 @@
            (swap! grid assoc-in [row col :north] 1)
            (swap! grid assoc-in [(+ row 1) col :south] 1)))))))
 
-(defn sidewinder
-  ([row]
-   (let [no-of-rows (count @grid)
-         no-of-cols (count (first @grid))]
-     (loop [run-start 0 col 0]
-       (let [carvenorth? (and (< row (dec no-of-rows)) (or (lastcolumn? col no-of-cols) (= 0 (rand-int 2))))]
-         (cond
-           (= col no-of-cols) nil
-           (true? carvenorth?) (do
-                                 (let [cell (+ run-start (rand-int (inc (- col run-start))))]
-                                   (swap! grid assoc-in [row cell :north] 1)
-                                   (swap! grid assoc-in [(+ row 1) cell :south] 1)
-                                   (recur (inc col) (inc col))))
-           (< (inc col) no-of-cols) (do
-                                      (swap! grid assoc-in [row col :east] 1)
-                                      (swap! grid assoc-in [row (+ col 1) :west] 1)
-                                      (recur run-start (inc col)))))))))
+(defn sidewinder [row]
+  (let [no-of-rows (count @grid)
+        no-of-cols (count (first @grid))]
+    (loop [run-start 0 col 0]
+      (let [carvenorth? (and (< row (dec no-of-rows)) (or (lastcolumn? col no-of-cols) (= 0 (rand-int 2))))]
+        (cond
+          (= col no-of-cols) nil
+          (true? carvenorth?) (do
+                                (let [cell (+ run-start (rand-int (inc (- col run-start))))]
+                                  (swap! grid assoc-in [row cell :north] 1)
+                                  (swap! grid assoc-in [(+ row 1) cell :south] 1)
+                                  (recur (inc col) (inc col))))
+          (< (inc col) no-of-cols) (do
+                                     (swap! grid assoc-in [row col :east] 1)
+                                     (swap! grid assoc-in [row (+ col 1) :west] 1)
+                                     (recur run-start (inc col))))))))
 
 (defn recursive-backtracker [x y]
   (let [directions (shuffle ["N" "E" "S" "W"])
