@@ -100,7 +100,7 @@
 (defn generator-page []
   (fn []
     [:main.main
-     [:h1 "Maze Generator" " "]
+     [:h1 "Maze Generator"]
      [generator-menu]
      [:p.maze-info [:b "Amount of Saved Mazes: "] (count @mazes)]
      [:div
@@ -133,7 +133,7 @@
         maze-details (reagent/atom {:name nil :type @algorithm :size (count @grid)})]
     (fn []
       [:main.main
-       [:h1 "Maze Solver"]
+       [:h1 "Maze Solver (A*)"]
        [solver-menu solve-coord maze-details]
        (if (some? (:name @maze-details))
          [:p.maze-info [:b "Maze Name: "] (:name @maze-details) " | " [:b "Maze Type: "] (:type @maze-details) " | " [:b "Maze Size: "] (:size @maze-details)]
