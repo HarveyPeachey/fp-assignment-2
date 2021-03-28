@@ -40,7 +40,7 @@ a:hover {
   text-align: center;
 }
 
-.maze-config, .maze-info {
+.maze-menu, .maze-info {
   height: 54px;
 }
 
@@ -50,6 +50,21 @@ a:hover {
 
 .generate-button {
   text-align: center;
+}
+
+.maze-settings {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+select {
+  margin-right: 5px;
+}
+
+.maze-saving {
+  display: flex;
+  justify-content: space-between;
 }
 
 .solver-coords {
