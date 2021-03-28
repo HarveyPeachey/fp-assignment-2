@@ -43,28 +43,46 @@
   ([row col]
    ; store number of rows and number of columns
    (let [no-of-rows (count @grid) no-of-cols (count (first @grid))]
-       (cond
-           ; above top row return maze
-           (= row no-of-rows) @grid
-           ; top row && last column do nothing
-           (and (toprow? row no-of-rows) (lastcolumn? col no-of-cols)) 0
-           ; top row carve east
-           (toprow? row no-of-rows) (do
-                                        (swap! grid assoc-in [row col :east] 1)
-                                        (swap! grid assoc-in [row (+ col 1) :west] 1))
-           ; not top row && last column carve north
-           (lastcolumn? col no-of-cols) (do
-                                            (swap! grid assoc-in [row col :north] 1)
-                                            (swap! grid assoc-in [(+ row 1) col :south] 1))
-           ; not top row carve north or east
-           :else
-           (if (= 0 (rand-int 2))
-               (do
-                   (swap! grid assoc-in [row col :east] 1)
-                   (swap! grid assoc-in [row (+ col 1) :west] 1))
-               (do
-                   (swap! grid assoc-in [row col :north] 1)
-                   (swap! grid assoc-in [(+ row 1) col :south] 1)))))))
+     (cond
+       ; above top row return maze
+       (= row no-of-rows) @grid
+       ; top row && last column do nothing
+       (and (toprow? row no-of-rows) (lastcolumn? col no-of-cols)) 0
+       ; top row carve east
+       (toprow? row no-of-rows) (do
+                                 (swap! grid assoc-in [row col :east] 1)
+                                 (swap! grid assoc-in [row (+ col 1) :west] 1))
+       ; not top row && last column carve north
+       (lastcolumn? col no-of-cols) (do
+                                     (swap! grid assoc-in [row col :north] 1)
+                                     (swap! grid assoc-in [(+ row 1) col :south] 1))
+       ; not top row carve north or east
+       :else
+       (if (= 0 (rand-int 2))
+         (do
+           (swap! grid assoc-in [row col :east] 1)
+           (swap! grid assoc-in [row (+ col 1) :west] 1))
+         (do
+           (swap! grid assoc-in [row col :north] 1)
+           (swap! grid assoc-in [(+ row 1) col :south] 1)))))))
+
+(defn sidewinder
+  ([row]
+   (let [no-of-rows (count @grid)
+         no-of-cols (count (first @grid))]
+     (loop [run-start 0 col 0]
+       (let [carvenorth? (and (< row (dec no-of-rows)) (or (lastcolumn? col no-of-cols) (= 0 (rand-int 2))))]
+         (cond
+           (= col no-of-cols) nil
+           (true? carvenorth?) (do
+                                 (let [cell (+ run-start (rand-int (inc (- col run-start))))]
+                                   (swap! grid assoc-in [row cell :north] 1)
+                                   (swap! grid assoc-in [(+ row 1) cell :south] 1)
+                                   (recur (inc col) (inc col))))
+           (< (inc col) no-of-cols) (do
+                                      (swap! grid assoc-in [row col :east] 1)
+                                      (swap! grid assoc-in [row (+ col 1) :west] 1)
+                                      (recur run-start (inc col)))))))))
 
 (defn recursive-backtracker [x y]
   (let [directions (shuffle ["N" "E" "S" "W"])
@@ -100,13 +118,14 @@
 (defn carve-passages
   ([] (carve-passages 0 "bt"))
   ([row algorithm]
-   (if (= algorithm "bt")
-     (if (= row (count @grid))
-         @grid
-         (do
-            (dotimes [col (count (first @grid))]
-                (binary-tree row col))
-            (carve-passages (inc row) algorithm)))))
+   (if (= row (count @grid))
+     @grid
+     (do
+       (if (= algorithm "bt")
+         (dotimes [col (count (first @grid))]
+           (binary-tree row col))
+         (sidewinder row))
+       (carve-passages (inc row) algorithm))))
   ([x y algorithm]
    (if (= algorithm "rb")
      (if (= x -1)
