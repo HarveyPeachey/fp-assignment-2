@@ -46,11 +46,11 @@
        (= row no-of-rows) @grid
        (and (toprow? row no-of-rows) (lastcolumn? col no-of-cols)) 0
        (toprow? row no-of-rows) (do
-                                 (swap! grid assoc-in [row col :east] 1)
-                                 (swap! grid assoc-in [row (inc col) :west] 1))
+                                  (swap! grid assoc-in [row col :east] 1)
+                                  (swap! grid assoc-in [row (inc col) :west] 1))
        (lastcolumn? col no-of-cols) (do
-                                     (swap! grid assoc-in [row col :north] 1)
-                                     (swap! grid assoc-in [(inc row) col :south] 1))
+                                      (swap! grid assoc-in [row col :north] 1)
+                                      (swap! grid assoc-in [(inc row) col :south] 1))
        :else
        (if (= 0 (rand-int 2))
          (do
@@ -66,7 +66,7 @@
     (loop [run-start 0 col 0]
       (let [carvenorth? (and (< row (dec no-of-rows)) (or (lastcolumn? col no-of-cols) (= 0 (rand-int 2))))]
         (cond
-          (= col no-of-cols) nil
+          (= col no-of-cols) @grid
           (true? carvenorth?) (do
                                 (let [cell (+ run-start (rand-int (inc (- col run-start))))]
                                   (swap! grid assoc-in [row cell :north] 1)
@@ -95,7 +95,6 @@
               (= (get directions direction) "E") (do
                                                    (swap! grid assoc-in [x y :east] 1)
                                                    (swap! grid assoc-in [nx ny :west] 1)
-                                                   (swap! grid assoc-in [x y :visited] 1)
                                                    (recursive-backtracker nx ny))
               (= (get directions direction) "S") (do
                                                    (swap! grid assoc-in [x y :south] 1)
