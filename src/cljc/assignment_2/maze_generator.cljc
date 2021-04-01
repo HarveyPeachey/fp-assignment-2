@@ -64,14 +64,14 @@
   (let [no-of-rows (count @grid)
         no-of-cols (count (first @grid))]
     (loop [run-start 0 col 0]
-      (let [carvenorth? (and (< row (dec no-of-rows)) (or (lastcolumn? col no-of-cols) (= 0 (rand-int 2))))]
+      (letfn [(carvenorth? [] (and (< row (dec no-of-rows)) (or (lastcolumn? col no-of-cols) (= 0 (rand-int 2)))))]
         (cond
           (= col no-of-cols) @grid
-          (true? carvenorth?) (do
-                                (let [cell (+ run-start (rand-int (inc (- col run-start))))]
-                                  (swap! grid assoc-in [row cell :north] 1)
-                                  (swap! grid assoc-in [(inc row) cell :south] 1)
-                                  (recur (inc col) (inc col))))
+          (carvenorth?) (do
+                          (let [cell (+ run-start (rand-int (inc (- col run-start))))]
+                            (swap! grid assoc-in [row cell :north] 1)
+                            (swap! grid assoc-in [(inc row) cell :south] 1)
+                            (recur (inc col) (inc col))))
           (< (inc col) no-of-cols) (do
                                      (swap! grid assoc-in [row col :east] 1)
                                      (swap! grid assoc-in [row (inc col) :west] 1)
