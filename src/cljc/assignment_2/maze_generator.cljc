@@ -7,7 +7,7 @@
   (loop [count 0 row []]
       (if (= columns count)
           row
-          (recur (inc count) (conj row {:north 0 :east 0 :south 0 :west 0 :visited 0 :distance -1})))))
+          (recur (inc count) (conj row {:north 0 :east 0 :south 0 :west 0 :visited 0})))))
 
 (defn make-a-grid [rows columns]
   (loop [count 0 grid []]

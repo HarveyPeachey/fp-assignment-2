@@ -13,7 +13,7 @@
       (= direction-name :west) (hash-map :x x, :y (+ y -1)))))
 
 (defn neighbours [x y grid]
-  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid [x y]) :visited :distance))))
+  (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid [x y]) :visited))))
 
 (defn euclidean-distance [x1 y1 x2 y2]
   (Math/sqrt (+ (square (- x2 x1)) (square (- y2 y1)))))
