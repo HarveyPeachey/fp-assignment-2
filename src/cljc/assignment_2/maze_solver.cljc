@@ -1,6 +1,6 @@
 (ns assignment-2.maze-solver "Maze Solver")
 
-; These two videos were used to help me understand how the A* algorithms work
+; These two videos were used to help me understand how the A* algorithm works
 ; https://www.youtube.com/watch?v=-L-WgKMFuhE
 ; https://www.youtube.com/watch?v=K8asVZmpek8
 
@@ -19,9 +19,11 @@
 (defn neighbours [x y grid]
   (map #(find-neighbour % x y) (filter (fn [[k v]] (= v 1)) (dissoc (get-in grid [x y]) :visited))))
 
+; Old heuristic value that's unused
 (defn euclidean-distance [x1 y1 x2 y2]
   (Math/sqrt (+ (square (- x2 x1)) (square (- y2 y1)))))
 
+; More accurate heuristic value due to grid structure
 (defn manhattan-distance [x1 y1 x2 y2]
   (+ (Math/abs (- x1 x2)) (Math/abs (- y1 y2))))
 
