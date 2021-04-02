@@ -12,6 +12,11 @@
    [assignment-2.maze-solver :as maze-slv]
    [assignment-2.maze-names :as maze-names :refer [name-list]]))
 
+; I have used Clojurescript, Reagent and hazard to help with GUI development
+; Clojurescript converts clojure code to JavaScript
+; Reagent is a lightweight wrapper to make use of React, also using hicup syntax for writing the html
+; Hazard is used to randomise names for the maze saving functionality
+
 ;; -------------------------
 ;; Routes
 
@@ -34,6 +39,9 @@
 (def mazes (reagent/atom []))
 (def maze-name (reagent/atom ""))
 
+; Code from this blog post was used to help create the file saving functionality in clojurescript
+; http://marianoguerra.org/posts/download-frontend-generated-data-to-a-file-with-clojurescript.html
+
 (defn to-json [v] (.stringify js/JSON v))
 
 (defn download-object-as-json [value export-name]
@@ -45,6 +53,9 @@
    (.click link)
    (.removeChild (.-body js/document) link)
    (.revokeObjectURL js/URL data-blob)))
+
+; This article was used to help me understand file reading in JavaScript which I've ported over
+; https://web.dev/read-files/
 
 (defn handle-file-upload [e]
   (let [reader (js/FileReader.)]

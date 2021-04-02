@@ -1,5 +1,9 @@
 (ns assignment-2.maze-solver "Maze Solver")
 
+; These two videos were used to help me understand how the A* algorithms work
+; https://www.youtube.com/watch?v=-L-WgKMFuhE
+; https://www.youtube.com/watch?v=K8asVZmpek8
+
 (defn square "Returns the squared value of a given number"
   [x]
   (* x x))

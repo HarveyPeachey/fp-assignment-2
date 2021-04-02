@@ -1,6 +1,9 @@
 (ns assignment-2.maze-generator "Maze Generator"
   (:require [clojure.string :as str]))
 
+; This Blog was used to help produce Maze algorithms in clojure using both psuedo code and ruby example code
+; http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap.html
+
 ; Maze Grid Creation
 ; -------------------------------------------------------------------------------------------------------------------
 (defn make-a-row [columns]
