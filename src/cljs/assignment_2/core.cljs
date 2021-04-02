@@ -58,7 +58,7 @@
   (let [id (count @mazes)
         type @algorithm]
     (do
-      (swap! mazes conj {:id id :name (if (= @maze-name "") (hazard/words name-list 1) @maze-name) :type type :size @maze-size :maze @grid})
+      (swap! mazes conj {:id id :name (if (= @maze-name "") (first (hazard/words name-list 1)) @maze-name) :type type :size @maze-size :maze @grid})
       (reset! maze-name ""))))
 
 (defn clear-saved-mazes []
